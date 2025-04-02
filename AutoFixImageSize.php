@@ -1,13 +1,14 @@
 <?php
 /**
  * @name AutoFixImageSize
- * @version 1.0.2 pl
- * @author Gerrit van Aaken <gerrit@praegnanz.de> April 2011 – January 2013
+ * @version 1.0.3 pl
+ * @author servingpixels April 2025
+ * @author Based on Gerrit van Aaken <gerrit@praegnanz.de> April 2011 – January 2013
  *
  * @license GPLv2
  *
  * Fixes img elements with wrong width/height attributes. 
- * Uses phpThumbOf for generating correctly sized physical image files.
+ * Uses pThumb for generating correctly sized physical image files.
  *
  * Must be executed at "OnWebPagePrerender"
  */
