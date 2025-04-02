@@ -7,14 +7,11 @@
  * @license GPLv2
  *
  * Fixes img elements with wrong width/height attributes.
- * Uses pThumb for generating correctly sized physical image files.
- * For MODX 3.x
- *
+ * Uses pThumb for MODX 3.x
  * Must be executed at "OnWebPagePrerender"
  */
 
 $output = &$modx->resource->_output;
-
 $config = $modx->getConfig();
 
 preg_match_all('|<img.*?src=["\'](.*?)["\'].*?>|i', $output, $filenames);
@@ -23,7 +20,7 @@ foreach ($filenames[1] as $i => $filename) {
     $img_old = $filenames[0][$i];
     $allowcaching = false;
 
-    if (strpos($filename, "?") === false || strpos($filename, "/phpthumbof") === false) {
+    if (strpos($filename, "?") === false || strpos($filename, "/pthumb") === false) {
         if (stripos($filename, "http://") === 0 || stripos($filename, "https://") === 0) {
             $pre = "";
             if ($config['phpthumb_nohotlink_enabled']) {
@@ -43,17 +40,17 @@ foreach ($filenames[1] as $i => $filename) {
 
     $mypath = $pre . str_replace('%20', ' ', $filename);
     if ($allowcaching && $dimensions = @getimagesize($mypath)) {
-        preg_match('|width=["\']([0-9]+)["\']|i', $filenames[0][$i], $widths);
+        preg_match('/width=["\']?(\d+)["\']?/i', $filenames[0][$i], $widths);
         $width = $widths[1] ?? false;
         if (!$width) {
-            preg_match('|width:\s*([0-9]+)px|i', $filenames[0][$i], $widths);
+            preg_match('/width:\s*([0-9]+)px/i', $filenames[0][$i], $widths);
             $width = $widths[1] ?? false;
         }
 
-        preg_match('|height=["\']([0-9]+)["\']|i', $filenames[0][$i], $heights);
+        preg_match('/height=["\']?(\d+)["\']?/i', $filenames[0][$i], $heights);
         $height = $heights[1] ?? false;
         if (!$height) {
-            preg_match('|height:\s*([0-9]+)px|i', $filenames[0][$i], $heights);
+            preg_match('/height:\s*([0-9]+)px/i', $filenames[0][$i], $heights);
             $height = $heights[1] ?? false;
         }
 
